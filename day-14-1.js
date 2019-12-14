@@ -1,33 +1,19 @@
-// const leftovers = [];
-
-// ip: reactionsString
-function nFuelFor(ip, totalOre) {
+function nFuelFor(reactions, totalOre) {
   let low = 0,
-    high = totalOre / calcRequiredOre(ip, 1) * 2;
-    console.log({ low, high });
-  let lowOre, highOre;
+    high = totalOre / calcRequiredOre(reactions, 1) * 2;
   do {
     let mid = Math.floor((high+low)/2);
-    const curr = calcRequiredOre(ip, mid);
+    const curr = calcRequiredOre(reactions, mid);
     if (curr > totalOre) {
       high = mid - 1;
     } else {
       low = mid + 1;
     }
-    console.log({ highOre, lowOre, high, low });
   } while (high >= low);
   return low - 1;
-  // while (nOre >= 0){
-  //   nOre -= calcRequiredOre(ip, 1);
-  //   i++;
-  // }
-  // console.log({ nOre, i });
-  // if (nOre === 0) return i;
-  // return i - 1;
 }
 
 function calcRequiredOre(reactions, nFuels, leftovers) {
-  // const reactions = parseReactions(ip);
   return calculateOreFor({ name: 'FUEL', qty: nFuels }, reactions, leftovers);
 }
 
@@ -40,12 +26,10 @@ function parseReactions(ip) {
       output: parseChemical(opStr),
     }
   });
-  // console.log(JSON.stringify(reactions, undefined, 2));
   
 }
 
 function calculateOreFor(chem, reactions, leftovers = []) {
-  // let oreRequired = 0;
   const reaction = reactions.find(({ output }) => output.name === chem.name);
   let leftoverOutput = leftovers.find(({ name }) => name === reaction.output.name);
   if (!leftoverOutput) {
@@ -85,9 +69,7 @@ function calculateOreFor(chem, reactions, leftovers = []) {
       requiredInput.qty -= leftoverInput.qty;
       leftoverInput.qty = 0;
     }
-    // console.log({ reaction, producedOutputQty, chem, requiredInput, leftoverInput, leftoverOutput });
     if (input.name === 'ORE') {
-      // console.log(leftovers);
       nOre = Math.ceil(chem.qty / reaction.output.qty) * input.qty;
     } else {
       nOre = calculateOreFor(requiredInput, reactions, leftovers);
