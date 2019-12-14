@@ -6,9 +6,9 @@ var expect = chai.expect;
 
 const {
   runProgram
-} = require('../int-computer');
+} = require('../src/int-computer');
 
-const origIP = fs.readFileSync('./day-5-ip.txt').toString().split(',').map(parseFloat);
+const origIP = fs.readFileSync('2019/data/day-5-ip.txt').toString().split(',').map(parseFloat);
 
 describe('runProgram', () => {
   it('should process simple request correctly 1', () => {

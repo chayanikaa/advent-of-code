@@ -6,9 +6,9 @@ var expect = chai.expect;
 
 const {
   tryAllPhasePermutationsFindMax
-} = require('../day-7-2.js');
+} = require('../src/day-7-2.js');
 
-const origIP = fs.readFileSync('./day-7-ip.txt').toString().split(',').map(parseFloat);
+const origIP = fs.readFileSync('2019/data/day-7-ip.txt').toString().split(',').map(parseFloat);
 
 describe('tryAllPhasePermutationsFindMax feedback', () => {
   it('example one', () => {

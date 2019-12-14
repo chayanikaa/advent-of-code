@@ -6,10 +6,10 @@ var expect = chai.expect;
 
 const {
   runProgram
-} = require('../int-computer.js');
+} = require('../src/int-computer.js');
 
-const fullProgram = fs.readFileSync('./day-9-ip.txt').toString().split(',').map(parseFloat);
-const fullProgram2 = fs.readFileSync('./day-9-ip-2.txt').toString().split(',').map(parseFloat);
+const fullProgram = fs.readFileSync('2019/data/day-9-ip.txt').toString().split(',').map(parseFloat);
+const fullProgram2 = fs.readFileSync('2019/data/day-9-ip-2.txt').toString().split(',').map(parseFloat);
 
 
 describe('runProgram with opcode 9', () => {

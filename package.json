@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": ".eslintrc.js",
   "scripts": {
-    "test": "mocha tests/"
+    "test": "mocha 2019/tests/"
   },
   "author": "",
   "license": "ISC",

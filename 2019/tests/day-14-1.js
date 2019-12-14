@@ -8,9 +8,9 @@ const {
   calcRequiredOre,
   nFuelFor,
   parseReactions,
-} = require('../day-14-1');
+} = require('../src/day-14-1');
 
-const mainIp = fs.readFileSync('./day-14-ip.txt').toString();
+const mainIp = fs.readFileSync('2019/data/day-14-ip.txt').toString();
 
 describe('calculate required ore', () => {
   it('example 1', () => {
