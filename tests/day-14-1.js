@@ -7,6 +7,7 @@ var expect = chai.expect;
 const {
   calcRequiredOre,
   nFuelFor,
+  parseReactions,
 } = require('../day-14-1');
 
 const mainIp = fs.readFileSync('./day-14-ip.txt').toString();
@@ -19,7 +20,9 @@ describe('calculate required ore', () => {
     7 A, 1 C => 1 D
     7 A, 1 D => 1 E
     7 A, 1 E => 1 FUEL`;
-    expect(calcRequiredOre(ip)).to.equal(31);
+    expect(
+      calcRequiredOre(parseReactions(ip), 1)
+    ).to.equal(31);
   });
 
   it('example 2', () => {
@@ -30,7 +33,9 @@ describe('calculate required ore', () => {
     5 B, 7 C => 1 BC
     4 C, 1 A => 1 CA
     2 AB, 3 BC, 4 CA => 1 FUEL`;
-    expect(calcRequiredOre(ip)).to.equal(165);
+    expect(
+      calcRequiredOre(parseReactions(ip), 1)
+    ).to.equal(165);
   });
 
   it('example 3', () => {
@@ -43,7 +48,9 @@ describe('calculate required ore', () => {
     7 DCFZ, 7 PSHF => 2 XJWVT
     165 ORE => 2 GPVTF
     3 DCFZ, 7 NZVS, 5 HKGWZ, 10 PSHF => 8 KHKGT`;
-    expect(calcRequiredOre(ip)).to.equal(13312);
+    expect(
+      calcRequiredOre(parseReactions(ip), 1)
+    ).to.equal(13312);
   });
 
 
@@ -60,7 +67,9 @@ describe('calculate required ore', () => {
     1 NVRVD => 8 CXFTF
     1 VJHF, 6 MNCFX => 4 RFSQX
     176 ORE => 6 VJHF`;
-    expect(calcRequiredOre(ip)).to.equal(180697);
+    expect(
+      calcRequiredOre(parseReactions(ip), 1)
+    ).to.equal(180697);
   });
 
   it('example 5', () => {
@@ -81,7 +90,9 @@ describe('calculate required ore', () => {
     121 ORE => 7 VRPVC
     7 XCVML => 6 RJRHP
     5 BHXH, 4 VRPVC => 5 LTCX`;
-    expect(calcRequiredOre(ip)).to.equal(2210736);
+    expect(
+      calcRequiredOre(parseReactions(ip), 1)
+    ).to.equal(2210736);
   });
 
   it('main ip', () => {
@@ -89,11 +100,11 @@ describe('calculate required ore', () => {
     // wrong: 535396 too high
     // wrong: 521839 too high
     // wrong: 499545 too low
-    expect(calcRequiredOre(ip)).to.equal(502491);
+    expect(calcRequiredOre(parseReactions(ip), 1)).to.equal(502491);
   });
 });
 
-describe.skip('1 trillion ore fuel', () => {
+describe('1 trillion ore fuel', () => {
   it('example 3', () => {
     const ip = `157 ORE => 5 NZVS
     165 ORE => 6 DCFZ
@@ -104,7 +115,7 @@ describe.skip('1 trillion ore fuel', () => {
     7 DCFZ, 7 PSHF => 2 XJWVT
     165 ORE => 2 GPVTF
     3 DCFZ, 7 NZVS, 5 HKGWZ, 10 PSHF => 8 KHKGT`;
-    expect(nFuelFor(ip, 1000000000000, [])).to.equal(82892753);
+    expect(nFuelFor(parseReactions(ip), 1000000000000)).to.equal(82892753);
   });
 
 
@@ -121,7 +132,7 @@ describe.skip('1 trillion ore fuel', () => {
     1 NVRVD => 8 CXFTF
     1 VJHF, 6 MNCFX => 4 RFSQX
     176 ORE => 6 VJHF`;
-    expect(nFuelFor(ip, 1000000000000)).to.equal(5586022);
+    expect(nFuelFor(parseReactions(ip), 1000000000000)).to.equal(5586022);
   });
 
   it('example 5', () => {
@@ -142,14 +153,11 @@ describe.skip('1 trillion ore fuel', () => {
     121 ORE => 7 VRPVC
     7 XCVML => 6 RJRHP
     5 BHXH, 4 VRPVC => 5 LTCX`;
-    expect(nFuelFor(ip, 1000000000000)).to.equal(460664);
-  }).timeout(10000000);
+    expect(nFuelFor(parseReactions(ip), 1000000000000)).to.equal(460664);
+  });
 
-  it.skip('main ip', () => {
+  it('main ip', () => {
     const ip = mainIp;
-    // wrong: 535396 too high
-    // wrong: 521839 too high
-    // wrong: 499545 too low
-    expect(nFuelFor(ip, 1000000000000)).to.equal(460664);
-  }).timeout(10000000000);
+    expect(nFuelFor(parseReactions(ip), 1000000000000)).to.equal(2944565);
+  });
 });

@@ -1,20 +1,34 @@
 // const leftovers = [];
 
-function nFuelFor(ip, totalOre, leftovers = []) {
-  let nOre = totalOre;
-  let i = 0;
-  while (nOre >= 0){
-    nOre -= calcRequiredOre(ip, leftovers);
-    i++;
-  }
-  console.log({ nOre, i });
-  if (nOre === 0) return i;
-  return i - 1;
+// ip: reactionsString
+function nFuelFor(ip, totalOre) {
+  let low = 0,
+    high = totalOre / calcRequiredOre(ip, 1) * 2;
+    console.log({ low, high });
+  let lowOre, highOre;
+  do {
+    let mid = Math.floor((high+low)/2);
+    const curr = calcRequiredOre(ip, mid);
+    if (curr > totalOre) {
+      high = mid - 1;
+    } else {
+      low = mid + 1;
+    }
+    console.log({ highOre, lowOre, high, low });
+  } while (high >= low);
+  return low - 1;
+  // while (nOre >= 0){
+  //   nOre -= calcRequiredOre(ip, 1);
+  //   i++;
+  // }
+  // console.log({ nOre, i });
+  // if (nOre === 0) return i;
+  // return i - 1;
 }
 
-function calcRequiredOre(ip, leftovers = []) {
-  const reactions = parseReactions(ip);
-  return calculateOreFor({ name: 'FUEL', qty: 1 }, reactions, leftovers);
+function calcRequiredOre(reactions, nFuels, leftovers) {
+  // const reactions = parseReactions(ip);
+  return calculateOreFor({ name: 'FUEL', qty: nFuels }, reactions, leftovers);
 }
 
 function parseReactions(ip) {
@@ -91,6 +105,7 @@ function parseChemical(chemStr) {
 }
 
 module.exports = {
+  parseReactions,
   calcRequiredOre,
   nFuelFor,
 }
