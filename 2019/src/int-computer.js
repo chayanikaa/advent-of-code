@@ -37,7 +37,7 @@ function runProgram(ip, userInput, programOutput, index = 0, givenRelativeBase =
   let relativeBase = givenRelativeBase;
   while(i < ip.length) {
     const info = decodeInstruction({ ip, instructionIdx: i, relativeBase });
-    // console.log({ ...info, userInput, programOutput, relativeBase });
+    // console.log({ ...info, userInput, programOutput, relativeBase, instruction: ip.slice(i, i+4) });
     result = executeInstruction({ ip, ...info, userInput, programOutput, relativeBase });
     relativeBase = result.relativeBase;
     if (result.exitCode) {
