@@ -18,23 +18,24 @@ const RESPONSE_CODES = {
   OXYGEN_SUCCESS: 2
 };
 
-const drawingMap = ['#', '.', 'X'];
+const drawingMap = ['#', '.', 'X', 'U'];
 
 const map = new Map();
 const { oxygenPosition } = findOxygenPosition(map);
-  // drawMap(map, oxygenPosition);
+console.log(oxygenPosition);
+drawMap(map);
   // console.log(oxygenPosition, i);
-const shortestPath = calculateFewestSteps({ map, destination: oxygenPosition, source: [0,0] });
-console.log(shortestPath);
+// const shortestPath = calculateMaxDistance({ map, source: oxygenPosition });
+// console.log(shortestPath);
 
-
-function calculateFewestSteps({ map, destination, source }) {
+function calculateFewestSteps({ map, destination, source, distancesMap = new Map() }) {
   const unvisitedSet = new Set(map.keys());
-  const distancesMap = new Map();
-  map.forEach((_, key) => {
-    distancesMap.set(`${source.join(',')},${key}`, Infinity);
-  });
-  distancesMap.set(`${source.join(',')},${source.join(',')}`, 0);
+  if (!distancesMap.size) {
+    map.forEach((_, key) => {
+      distancesMap.set(`${source.join(',')},${key}`, Infinity);
+    });
+    distancesMap.set(`${source.join(',')},${source.join(',')}`, 0);
+  }
   // console.log({ distancesMap });
 
   let currentNode = source;
@@ -58,8 +59,8 @@ function calculateFewestSteps({ map, destination, source }) {
         distancesMap.get(sourceToCurrentKey) +
         distancesMap.get(currentToNeighborKey)
       );
-      console.log(distancesMap.get(sourceToNeighborKey), distancesMap.get(sourceToCurrentKey), distancesMap.get(currentToNeighborKey));
-      console.log({ currentNode, neighbor, distance });
+      // console.log(distancesMap.get(sourceToNeighborKey), distancesMap.get(sourceToCurrentKey), distancesMap.get(currentToNeighborKey));
+      // console.log({ currentNode, neighbor, distance });
       distancesMap.set(sourceToNeighborKey, distance);
       // const distance = calculateFewestSteps({ map, destination: neighbor});
       toVisit.push(neighbor);
@@ -85,9 +86,11 @@ function findOxygenPosition(map = new Map()) {
   const computer = new Computer(program, []);
   let response;
   let i = 0;
-  while (response !== 2 && !computer.completed) {
+  let xRange = 1, yRange = 1;
+  let minX = 0, minY = 0, maxX = 0, maxY = 0;
+  // while (/*response !== 2 */!computer.completed) {
   
-  // while (i < 5) {
+  while (map.size < (xRange * yRange)) {
     computer.input.push(currentDir);
     computer.run();
     response = computer.output.shift();
@@ -101,7 +104,13 @@ function findOxygenPosition(map = new Map()) {
     map.set(nextPos.join(','), response);
     currentDir = getNextDirection({ map, currentPos, currentDir });
     // console.log({ response, currentDir, currentPos });
-    
+    minX = Math.min(minX, nextPos[0]);
+    minY = Math.min(minY, nextPos[1]);
+    maxX = Math.max(maxX, nextPos[0]);
+    maxY = Math.max(maxY, nextPos[1]);
+    xRange = maxX - minX + 1;
+    yRange = maxY - minY + 1;
+    console.log({ xRange, yRange, mapSize: map.size });
     i++;
   }
   //drawMap(map, currentPos);
@@ -120,28 +129,6 @@ function getNextDirection({ map, currentPos, currentDir }) {
     }
   });
   return possibleDirs[Math.floor(Math.random() * possibleDirs.length - Number.EPSILON)];
-
-  // let wallDistances = {};
-  // Object.values(DIRECTIONS).forEach(dir => {
-  //   let wallDistance = 0;
-  //   let nextPos = currentPos;
-  //   while (true) {
-  //     nextPos = getNextPosition({ currentPos: nextPos, dir});
-  //     if (map.get(nextPos.join(',')) === undefined) {
-  //       wallDistance = Infinity;
-  //       break;
-  //     } else if (map.get(nextPos.join(',')) === RESPONSE_CODES.WALL_FAIL) {
-  //       break;
-  //     } else {
-  //       wallDistance++;
-  //     }
-  //   }
-
-  //   wallDistances[dir] = wallDistance;
-  // });
-  // console.log({ wallDistances });
-  // const maxDistance = Math.max(...Object.values(wallDistances));
-  // return Number(Object.keys(wallDistances).find(key => wallDistances[key] === maxDistance));
 }
 
 function getNextPosition({ currentPos, dir }) {
@@ -160,11 +147,10 @@ function getNextPosition({ currentPos, dir }) {
   return nextPos;
 }
 
-function drawMap(map, currentPos) {
-  const matrix = getMatrix(map);
+function drawMap(map) {
+  const matrix = getMatrix(map, 3);
   matrix.forEach((row,y)=> console.log(
-    row.map((code,x) => x === currentPos[0] && y === currentPos[1] ? 'D' :
-      drawingMap[code]
+    row.map(code => drawingMap[code]
     ).join('')));
 }
 

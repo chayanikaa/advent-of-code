@@ -17,7 +17,7 @@ class Map2D {
   }
 }
 
-function getMatrix(map) {
+function getMatrix(map, defaultValue = 0) {
   const xPosArr = [], yPosArr = [];
   [...map.keys()].forEach(pos => {
     const formattedPos = pos.split(',').map(parseFloat);
@@ -42,7 +42,7 @@ function getMatrix(map) {
     x = minX;
     while (x <= maxX) {
       const value = map.get(`${x},${y}`);
-      matrix[y + yOffset][x + xOffset] = value || 0;
+      matrix[y + yOffset][x + xOffset] = value || defaultValue;
       x++;
     }
     y++;
