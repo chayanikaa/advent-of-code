@@ -20,20 +20,73 @@ const RESPONSE_CODES = {
 
 const drawingMap = ['#', '.', 'X'];
 
-const oxygenPosition = findOxygenPosition();
-const shortestPath = calculateFewestSteps();
+const map = new Map();
+const { oxygenPosition } = findOxygenPosition(map);
+  // drawMap(map, oxygenPosition);
+  // console.log(oxygenPosition, i);
+const shortestPath = calculateFewestSteps({ map, destination: oxygenPosition, source: [0,0] });
+console.log(shortestPath);
 
-function calculateFewestSteps() {}
 
-function findOxygenPosition() {
-  const map = new Map();
+function calculateFewestSteps({ map, destination, source }) {
+  const unvisitedSet = new Set(map.keys());
+  const distancesMap = new Map();
+  map.forEach((_, key) => {
+    distancesMap.set(`${source.join(',')},${key}`, Infinity);
+  });
+  distancesMap.set(`${source.join(',')},${source.join(',')}`, 0);
+  // console.log({ distancesMap });
+
+  let currentNode = source;
+  const toVisit = [ currentNode ];
+  // while (unvisitedSet.has(destination.join(',')) && toVisit.length) {
+  while (currentNode = toVisit.shift()) {
+    const neighbors = getNeighbors(map, currentNode);
+    // console.log({ neighbors, unvisitedSet });
+    unvisitedSet.delete(currentNode.join(','));
+    neighbors.forEach(neighbor => {
+      if (!unvisitedSet.has(neighbor.join(','))) {
+        return;
+      }
+      const sourceToNeighborKey = `${source.join(',')},${neighbor.join(',')}`;
+      const currentToNeighborKey = `${currentNode.join(',')},${neighbor.join(',')}`;
+      const sourceToCurrentKey = `${source.join(',')},${currentNode.join(',')}`;
+      distancesMap.set(currentToNeighborKey, 1);
+      distancesMap.set(sourceToNeighborKey, distancesMap.get(sourceToNeighborKey) || Infinity);
+      const distance = Math.min(
+        distancesMap.get(sourceToNeighborKey),
+        distancesMap.get(sourceToCurrentKey) +
+        distancesMap.get(currentToNeighborKey)
+      );
+      console.log(distancesMap.get(sourceToNeighborKey), distancesMap.get(sourceToCurrentKey), distancesMap.get(currentToNeighborKey));
+      console.log({ currentNode, neighbor, distance });
+      distancesMap.set(sourceToNeighborKey, distance);
+      // const distance = calculateFewestSteps({ map, destination: neighbor});
+      toVisit.push(neighbor);
+    });
+    // console.log('source to current', distancesMap.get(`${source.join(',')},${currentNode.join(',')}`));
+    // console.log({ currentNode, toVisit });
+  }
+  //console.log(distancesMap);
+  return distancesMap.get(`${source.join(',')},${destination.join(',')}`);
+}
+
+function getNeighbors(map, currentPos) {
+  // only empty spaces are nodes
+  const positions = Object.values(DIRECTIONS).map(dir => getNextPosition({ currentPos, dir }));
+  return positions.filter(position => map.get(position.join(',')));
+}
+
+
+function findOxygenPosition(map = new Map()) {
   let currentPos = [0,0];
   let nextPos;
   let currentDir = DIRECTIONS.NORTH;
   const computer = new Computer(program, []);
   let response;
+  let i = 0;
   while (response !== 2 && !computer.completed) {
-  // let i = 0;
+  
   // while (i < 5) {
     computer.input.push(currentDir);
     computer.run();
@@ -47,12 +100,12 @@ function findOxygenPosition() {
     
     map.set(nextPos.join(','), response);
     currentDir = getNextDirection({ map, currentPos, currentDir });
-    console.log({ response, currentDir, currentPos });
+    // console.log({ response, currentDir, currentPos });
     
-    // i++;
+    i++;
   }
-  drawMap(map, currentPos);
-  return currentPos;
+  //drawMap(map, currentPos);
+  return { oxygenPosition: currentPos, map, i };
 }
 
 function getNextDirection({ map, currentPos, currentDir }) {
