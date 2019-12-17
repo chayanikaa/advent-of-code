@@ -43,4 +43,5 @@ while (!computer.completed && ascii.length) {
   computer.run();
 }
 const output = computer.output;
+console.log('length', output.length);
 console.log('space dust: ', output.pop());

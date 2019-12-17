@@ -36,18 +36,10 @@ matrix = restoreMatrix(matrix);
 
 const path = [];
 
-// console.log({ currDir, currPos, set: new Set(matrix.flat()) });
-
-let i = 0;
-// matrix[currPos.y][currPos.x] = ASCII_MAP['@'];
-
 let turn;
 
 while (turn !== 'exit') {
-// while (currPos.x !== 16 && currPos !== 12) {
-// while ( i < 330 ) {
   turn = getTurn({ pos: currPos, matrix, currDir });
-  // console.log({ turn });
   if (!turn) {
     moveCounter++;
     currPos = getNextPos({ pos: currPos, dir: currDir });
@@ -61,19 +53,15 @@ while (turn !== 'exit') {
   if (turn === 'exit') {
     path.push(moveCounter);
   }
-  i++;
-  // console.log({ currPos, currDir, moveCounter });
-  // drawMatrix(matrix);
+  drawMatrix(matrix);
 }
-// console.log({ path: path.join(',') });
 
 let strPath =  path.join(',');
-strPath = strPath.replace(/L,4,L,4,L,6,R,10,L,6/g, 'AAAAA');
-strPath = strPath.replace(/L,12,L,6,R,10,L,6/g, 'BBBB');
-strPath = strPath.replace(/R,8,R,10,L,6/g, 'CCCC');
+strPath = strPath.replace(/L,4,L,4,L,6,R,10,L,6/g, 'A');
+strPath = strPath.replace(/L,12,L,6,R,10,L,6/g, 'B');
+strPath = strPath.replace(/R,8,R,10,L,6/g, 'C');
 
-console.log(strPath);
-// console.log(strPath.replace(/R,10,L,6,R,8,R,10,L,6/g, 'BBBB'));
+console.log('Main instruction: ', strPath);
 
 function getTurn({ pos, matrix, currDir }) {
   if (isNextCharALedge({dir: currDir, pos, matrix})) {
