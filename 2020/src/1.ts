@@ -6,7 +6,6 @@ async function inputAsArray() {
 	const buffer = await fs.readFile('inputs/1.txt');
 	const str = buffer.toString();
 	const asArray = str.split('\n').map((part) => +part);
-	// console.log(asArray)
 	return asArray;
 }
 
