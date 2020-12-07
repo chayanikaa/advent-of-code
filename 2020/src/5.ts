@@ -64,7 +64,7 @@ function sortMatrix(matrix: {row: number, column: number}[]) {
 function findMissing(matrix: {row: number, column: number}[]): {
   row: number,
   column: number,
-} {
+} | undefined {
   let start = matrix[0].row;
   const maxRow = matrix[matrix.length - 1].row;
   let iCol = 0;
@@ -92,5 +92,5 @@ inputAsArray('inputs/5.txt').then(arr => {
   console.log('Part 1', Math.max(...matrix.map(seat => getId(seat.row, seat.column))));
   sortMatrix(matrix);
   const missing = findMissing(matrix);
-  console.log('Part 2', getId(missing.row, missing.column));
+  console.log('Part 2', missing && getId(missing.row, missing.column));
 });

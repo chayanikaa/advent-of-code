@@ -22,7 +22,7 @@ function findEntries(arr: number[]) {
 		});
 	});
 	console.log(elements);
-	console.log(elements[0] * elements[1]);
+	console.log('Part 1', elements[0] * elements[1]);
 }
 
 function findEntries2(arr: number[]) {
@@ -40,7 +40,10 @@ function findEntries2(arr: number[]) {
 		});
 	});
 	console.log(elements);
-	console.log(elements[0] * elements[1] * elements[2]);
+	console.log('Part 2', elements[0] * elements[1] * elements[2]);
 }
 
-inputAsArray().then(findEntries2);
+inputAsArray().then((arr) => {
+	findEntries(arr);
+	findEntries2(arr);
+});

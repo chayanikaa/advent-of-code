@@ -48,5 +48,6 @@ function isValid2(input: Parsed): boolean {
 }
 
 inputAsArray().then(arr => {
-  console.log(arr.map(parseInput).filter(isValid2).length);
+  console.log('Part 1', arr.map(parseInput).filter(isValid1).length);
+  console.log('Part 2', arr.map(parseInput).filter(isValid2).length);
 })

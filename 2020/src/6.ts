@@ -1,5 +1,4 @@
 import { promises as fs } from 'fs';
-import { toEditorSettings } from 'typescript';
 
 async function readAnswers() {
   const buffer = await fs.readFile('inputs/6.txt');
@@ -8,7 +7,7 @@ async function readAnswers() {
   return groupStrings.map(groupStr => {
     const groupParts = [ ...groupStr.split('\n') ];
     const nonFlatArr = [ ...groupParts.map(groupPart => groupPart.split('')) ];
-    console.log(nonFlatArr)
+    // console.log(nonFlatArr)
     return nonFlatArr;
   });
 }
@@ -36,5 +35,5 @@ readAnswers().then(answerArrs => {
     return everyoneYesSet.size;
 
   });
-  console.log(sizes.reduce((acc, cur) => acc + cur, 0));
+  console.log('Part 2', sizes.reduce((acc, cur) => acc + cur, 0));
 });

@@ -6,7 +6,7 @@ const requiredFields = ['byr', 'iyr', 'eyr', 'hgt', 'hcl',
 const optionalFields = ['cid'];
 
 function isValid2(passport: any) {
-  console.log(passport);
+  // console.log(passport);
   const byr = parseInt(passport.byr, 10);
   if (isNaN(byr) || byr < 1920 || byr > 2002) {
     return false;
@@ -80,5 +80,6 @@ async function readPassports() {
 }
 
 readPassports().then(passports => {
-  console.log(passports.filter(isValid2).length);
+  console.log('Part 1', passports.filter(isValid).length);
+  console.log('Part 2', passports.filter(isValid2).length);
 });
