@@ -35,14 +35,17 @@ function countPossibilities(joltages: number[],
   return resultMap.get(targetI);
 }
 
-
 inputAsArray('inputs/10.txt').then(inputs => {
   const bagJoltages = inputs.map(input => +input).sort((a,b) => a-b);
   const builtInJoltage = bagJoltages[bagJoltages.length - 1] + 3;
   const joltages = [ 0, ...bagJoltages, builtInJoltage]
-
+  console.time();
   console.log('part 1', part1(bagJoltages));
+  console.timeEnd();
+  console.time();
   console.log('part 2', countPossibilities(joltages));
+  console.timeEnd();
+
 });
 
 
