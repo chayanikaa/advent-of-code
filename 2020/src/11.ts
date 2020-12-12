@@ -41,13 +41,16 @@ function isVisibleSeatOccupied(
   return false;
 }
 
-function simulateRound(map: string[], onlyAdjacent = false): {
+function simulateRound(map: string[], maxAdjacentOcc: number, onlyAdjacent = false): {
   newMap: string[],
   positionChanges: number,
 } {
   let positionChanges = 0;
   const newMap = map.map((row, rowI) => {
     return row.split('').map((val, colI) => {
+      if (val === SeatState.floor) {
+        return val;
+      }
       const seeingOccupied = seeingIncrementers.map(
         incrementers => {
           return isVisibleSeatOccupied(
@@ -60,7 +63,6 @@ function simulateRound(map: string[], onlyAdjacent = false): {
           );
         }
       ).filter(occ => occ).length;
-
       if (val === SeatState.empty) {
         if (seeingOccupied === 0) {
           positionChanges+=1;
@@ -68,7 +70,7 @@ function simulateRound(map: string[], onlyAdjacent = false): {
         }
       }
       if (val === SeatState.occupied) {
-        if (seeingOccupied >= 5) {
+        if (seeingOccupied >= maxAdjacentOcc) {
           positionChanges+=1;
           return SeatState.empty;
         }
@@ -84,8 +86,8 @@ function simulateRound(map: string[], onlyAdjacent = false): {
 
 function countOccupied(map: string[]): number {
   let occupied = 0;
-  map.forEach((row, rowI) => {
-    return row.split('').forEach((val, colI) => {
+  map.forEach((row) => {
+    return row.split('').forEach((val) => {
       if (val === SeatState.occupied) {
         occupied++;
       }
@@ -94,19 +96,23 @@ function countOccupied(map: string[]): number {
   return occupied;
 }
 
-function simulateTillStabilize(map: string[], onlyAdjacent = false): number {
+function simulateTillStabilize(map: string[], maxAdjacentOcc = 5, onlyAdjacent = false): number {
   let simulateResult = {
     newMap: map,
     positionChanges: 0,
   };
   do {
-    simulateResult = simulateRound(simulateResult.newMap, onlyAdjacent);
+    simulateResult = simulateRound(simulateResult.newMap, maxAdjacentOcc, onlyAdjacent);
   } while (simulateResult.positionChanges !== 0)
   return countOccupied(simulateResult.newMap);
 }
 
 
 inputAsArray('inputs/11.txt').then(inputs => {
-  console.log('Part 1', simulateTillStabilize(inputs, true));
+  console.time();
+  console.log('Part 1', simulateTillStabilize(inputs, 4, true));
+  console.timeEnd();
+  console.time();
   console.log('Part 2', simulateTillStabilize(inputs));
+  console.timeEnd();
 });
