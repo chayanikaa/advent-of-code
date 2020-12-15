@@ -1,8 +1,8 @@
 import { promises as fs } from 'fs';
 
-export async function inputAsArray(filePath: string): Promise<string[]> {
+export async function inputAsArray(filePath: string, delim: string = '\n'): Promise<string[]> {
 	const buffer = await fs.readFile(filePath);
 	const str = buffer.toString();
-	const asArray = str.split('\n');
+	const asArray = str.split(delim);
 	return asArray;
 }
