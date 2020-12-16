@@ -1,4 +1,3 @@
-import { access } from 'fs';
 import { inputAsArray } from './utils/util';
 
 type Rules = Record<string, number[][]>;
@@ -55,7 +54,6 @@ function validNearby(rules: Rules, input: string[]) {
 
 function isInvalid(ranges: number[][], val: number) {
   const result = !ranges.some(range => val >= range[0] && val <= range[1]);
-  // console.log('isInvalid', ranges, val, result);
   return result;
 }
 
@@ -68,7 +66,6 @@ function findFieldOrder(data: Data) {
       let isField = true;
       let i = 0;
       while(i < nearby.length) {
-        // console.log(field, i, colI);
         if (isInvalid(rules[field], nearby[i][colI])) {
           isField = false;
           break;
@@ -113,8 +110,7 @@ inputAsArray('inputs/16.txt').then((arr) => {
 function findUniqueFields(matchedFields: MatchedField[]) {
   let newMatchedFields = matchedFields;
   while (!newMatchedFields.every(matchedField => matchedField.cols.length === 1)) {
-    // newMatchedFields = JSON.parse(JSON.stringify(matchedFields));
-    // let uniqueField: string, uniqueCol;
+
     let uniqueMap: Map<string, number> = new Map();
     let uniqueSet: Map<number, string> = new Map();
 
