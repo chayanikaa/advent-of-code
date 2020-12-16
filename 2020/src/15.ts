@@ -18,7 +18,7 @@ function playNextTurn(turns: Turn[], numberMap: NumberMap) {
 
 	if (nextNumberTurns) {
 		numberMap.set(nextNumber, [
-			nextNumberTurns.pop() as number,
+			nextNumberTurns[nextNumberTurns.length - 1],
 			turns.length,
 		]);
 	} else {
