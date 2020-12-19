@@ -1,7 +1,5 @@
 import { inputAsArray } from './utils/util';
 
-import { promises as fs } from 'fs';
-
 interface Rule {
   char?: string;
   sequences?: number[][];
@@ -25,58 +23,37 @@ function parseRules(rulesStrs: string[]): Rule[] {
   return rules;
 }
 
-function findPossibilities(rules: Rule[],
-  idx: number,
-  covered: number[] = [],
-  maxDepth = 1): string[] {
-  console.log({ idx, covered: covered[idx], maxDepth });
-  if (covered[idx]) {
-    covered[idx] = covered[idx] + 1;
-  } else {
-    covered[idx] = 1;
-  }
-  const rule = rules[idx];
-  // console.log(idx);
+function isValid(rules: Rule[], msg: string, ruleIdx: number | undefined, rest: number[]): boolean | undefined {
+  if (ruleIdx == undefined) return !msg;
+  const rule = rules[ruleIdx];
+
   if (rule.char) {
-    return [ rule.char ];
-  }
-  if (rule.sequences) {
-    return rule.sequences.flatMap(sequence => {
-      // console.log(idx, sequence);
-      return sequence.reduce((acc: string[], cur) => {
-        
-        let newAcc: string[] = [];
-        let curPossibilities: string[] = [ '' ];
-        console.log({ cur, covered: covered[cur], maxDepth });
-        if (!covered[cur] || covered[cur] && covered[cur] <= maxDepth) {
-          curPossibilities = findPossibilities(rules, cur, covered, maxDepth);
-        }
-       
-        console.log({ curPossibilities, cur, acc });
-        curPossibilities.forEach(curPoss => {
-          newAcc.push(
-            ...acc.map(accPoss => `${accPoss}${curPoss}`)
-          );
-        });
-        console.log('newAcc', newAcc);
-        // console.log(Math.max( ...newAcc.map(accStr => accStr.length)));
-        return newAcc;
-      }, ['']);
+    if (msg[0] === rule.char && isValid(rules, msg.substring(1), rest.shift(), rest)) {
+      return true;
+    }
+    
+  } else {
+    return rule.sequences && rule.sequences.some(seq => {
+      const [ newRule, ...newRest ] = seq;
+      return isValid(rules, msg, newRule, [ ...newRest, ...rest]);
     });
-  }
-  return [];
+  } 
 }
-
-
 
 inputAsArray('inputs/19.txt', 'none').then((arr) => {
   const [ rulesStr, messagesStr ] = arr[0].split('\n\n');
   const rules = parseRules(rulesStr.split('\n'));
-  const possibilities = findPossibilities(rules, 42, [], 1);
-  console.log(possibilities);
+
+  rules[8] = { sequences: [
+    [42], [42, 8],
+  ]};
+
+  rules[11] = { sequences: [
+    [42, 31], [42, 11, 31],
+  ]};
+
   const matches = messagesStr.split('\n').filter(msg => {
-    return possibilities.includes(msg);
+    return isValid(rules, msg, 0, []);
   }).length;
-  console.log({ matches });
-  // console.log(JSON.stringify(rules, null, 2));
+  console.log(matches);
 });

@@ -26,25 +26,20 @@ function parseRules(rulesStrs: string[]): Rule[] {
 function findPossibilities(rules: Rule[], idx: number, seed?: string): string[] {
   
   const rule = rules[idx];
-  //console.log(rule);
   if (rule.char) {
     return [ rule.char ];
   }
   if (rule.sequences) {
     return rule.sequences.flatMap(sequence => {
-      console.log(idx, sequence);
+      // console.log(idx, sequence);
       return sequence.reduce((acc: string[], cur) => {
         let newAcc: string[] = [];
-        //console.log('acc', acc);
         const curPossibilities: string[] = findPossibilities(rules, cur);
-        //console.log({ curPossibilities, cur, acc });
         curPossibilities.forEach(curPoss => {
           newAcc.push(
             ...acc.map(accPoss => `${accPoss}${curPoss}`)
           );
         });
-        //console.log('newAcc', newAcc);
-        // console.log(Math.max( ...newAcc.map(accStr => accStr.length)));
         return newAcc;
       }, ['']);
     });
@@ -57,11 +52,10 @@ function findPossibilities(rules: Rule[], idx: number, seed?: string): string[] 
 inputAsArray('inputs/19.txt', 'none').then((arr) => {
   const [ rulesStr, messagesStr ] = arr[0].split('\n\n');
   const rules = parseRules(rulesStr.split('\n'));
-  const possibilities = findPossibilities(rules, 42, '');
-  console.log(possibilities);
+  const possibilities = findPossibilities(rules, 0, '');
+  // console.log(possibilities);
   const matches = messagesStr.split('\n').filter(msg => {
     return possibilities.includes(msg);
   }).length;
   console.log(matches);
-  // console.log(JSON.stringify(rules, null, 2));
 });
