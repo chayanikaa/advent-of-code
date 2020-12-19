@@ -58,10 +58,9 @@ function isInvalid(ranges: number[][], val: number) {
 }
 
 function findFieldOrder(data: Data) {
-  const fields = [];
-  const { nearby, mine, rules } = data;
+  const { nearby, rules } = data;
   const matchedFields: Record<string, number[]> = {};
-  Object.keys(rules).forEach((field, fieldI) => {
+  Object.keys(rules).forEach((field) => {
     nearby[0].forEach((col, colI) => {
       let isField = true;
       let i = 0;
@@ -109,14 +108,13 @@ inputAsArray('inputs/16.txt').then((arr) => {
 
 function findUniqueFields(matchedFields: MatchedField[]) {
   let newMatchedFields = matchedFields;
+  let uniqueMap: Map<string, number> = new Map();
+  let uniqueSet: Set<number> = new Set();
+
   while (!newMatchedFields.every(matchedField => matchedField.cols.length === 1)) {
-
-    let uniqueMap: Map<string, number> = new Map();
-    let uniqueSet: Map<number, string> = new Map();
-
     newMatchedFields.forEach(matched => {
       if(matched.cols.length === 1) {
-        uniqueSet.set(matched.cols[0], matched.field);
+        uniqueSet.add(matched.cols[0]);
         uniqueMap.set(matched.field, matched.cols[0]);
       }
     });
