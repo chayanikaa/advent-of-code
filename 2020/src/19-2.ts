@@ -44,6 +44,12 @@ inputAsArray('inputs/19.txt', 'none').then((arr) => {
   const [ rulesStr, messagesStr ] = arr[0].split('\n\n');
   const rules = parseRules(rulesStr.split('\n'));
 
+  const matches1 = messagesStr.split('\n').filter(msg => {
+    return isValid(rules, msg, 0, []);
+  }).length;
+
+  console.log('Part 1', matches1);
+
   rules[8] = { sequences: [
     [42], [42, 8],
   ]};
@@ -52,8 +58,8 @@ inputAsArray('inputs/19.txt', 'none').then((arr) => {
     [42, 31], [42, 11, 31],
   ]};
 
-  const matches = messagesStr.split('\n').filter(msg => {
+  const matches2 = messagesStr.split('\n').filter(msg => {
     return isValid(rules, msg, 0, []);
   }).length;
-  console.log(matches);
+  console.log('Part 2', matches2);
 });
