@@ -102,25 +102,25 @@ function matchesTile(curTile: Tile, nextTile: Tile, curTileCoords: number[]) {
 	let matchCoords: number[] | undefined;
 	let matchTile: Tile | undefined;
 	while (angle <= 270) {
-		const found = [rotatedTile, flipHorizontal(rotatedTile), flipVertical(rotatedTile)].some((fuckingTile) => {
-			if (curTile.bottom === fuckingTile.top) {
+		const found = [rotatedTile, flipHorizontal(rotatedTile), flipVertical(rotatedTile)].some((tileToCheck) => {
+			if (curTile.bottom === tileToCheck.top) {
 				matchCoords = [curTileCoords[0], curTileCoords[1] + 1];
-				matchTile = fuckingTile;
+				matchTile = tileToCheck;
 				return true;
 			}
-			if (curTile.top === fuckingTile.bottom) {
+			if (curTile.top === tileToCheck.bottom) {
 				matchCoords = [curTileCoords[0], curTileCoords[1] - 1];
-				matchTile = fuckingTile;
+				matchTile = tileToCheck;
 				return true;
 			}
-			if (curTile.left === fuckingTile.right) {
+			if (curTile.left === tileToCheck.right) {
 				matchCoords = [curTileCoords[0] - 1, curTileCoords[1]];
-				matchTile = fuckingTile;
+				matchTile = tileToCheck;
 				return true;
 			}
-			if (curTile.right === fuckingTile.left) {
+			if (curTile.right === tileToCheck.left) {
 				matchCoords = [curTileCoords[0] + 1, curTileCoords[1]];
-				matchTile = fuckingTile;
+				matchTile = tileToCheck;
 				return true;
 			}
 		});
@@ -306,8 +306,8 @@ function part2(seaMonsterStr: string, puzzle: Puzzle) {
 			rotatedImage,
 			flipImageHorizontal(rotatedImage),
 			flipImageVertical(rotatedImage)
-		].some((fuckingImage) => {
-			seaMonsters = findSeaMonsters(fuckingImage, seaMonsterPattern);
+		].some((imageToCheck) => {
+			seaMonsters = findSeaMonsters(imageToCheck, seaMonsterPattern);
 			return seaMonsters;
 		});
 		if (!found) {
