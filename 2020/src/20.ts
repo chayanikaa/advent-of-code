@@ -328,12 +328,17 @@ function part2(seaMonsterStr: string, puzzle: Puzzle) {
 
 
 inputAsArray('inputs/20.txt', '\n\n').then((tileStrings) => {
+	console.time();
 	const seaMonsterStr = 
 `                  # 
 #    ##    ##    ###
  #  #  #  #  #  #   `;
 	const puzzle = arrangePuzzle(tileStrings);
 
+
+
 	console.log('Part 1', part1(puzzle));
 	console.log('Part 2', part2(seaMonsterStr, puzzle));
+
+	console.timeEnd();
 });
