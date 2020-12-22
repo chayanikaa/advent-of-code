@@ -100,6 +100,7 @@ inputAsArray('inputs/21.txt').then((arr) => {
 		);
 	}, 0);
 
+  // Literally the only time the default sorting is helpful
 	const sortedAllergens = Object.keys(result).sort();
 
 	const canList = sortedAllergens.map((all) => result[all]).join(',');

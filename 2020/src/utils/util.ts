@@ -6,3 +6,9 @@ export async function inputAsArray(filePath: string, delim: string = '\n'): Prom
 	const asArray = str.split(delim);
 	return asArray;
 }
+
+export async function aTimeout(timeout: number) {
+	return new Promise((resolve, reject) => {
+		setTimeout(resolve, timeout);
+	});
+}
