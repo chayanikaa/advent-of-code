@@ -51,9 +51,8 @@ inputAsArray('inputs/22.txt', '\n\n').then((arr) => {
 	const deck1 = arr[0].split('\n').slice(1).map(n => +n);
 	const deck2 = arr[1].split('\n').slice(1).map(n => +n);
 	const winningDeck1 = simulateRecursiveCombat([ ...deck1], [ ...deck2]).deck;
+	console.log('Part 1', winningDeck1.reduce((acc, curr, i) => acc + curr * (winningDeck1.length - i), 0));
 
 	const winningDeck2 = simulateRecursiveCombat(deck1, deck2, true).deck;
-
-	console.log('Part 1', winningDeck1.reduce((acc, curr, i) => acc + curr * (winningDeck1.length - i), 0));
 	console.log('Part 2', winningDeck2.reduce((acc, curr, i) => acc + curr * (winningDeck2.length - i), 0));
 });
