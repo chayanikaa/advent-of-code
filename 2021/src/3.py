@@ -61,6 +61,5 @@ def part2():
     co2 = convert_bin_list_to_dec_num(get_rating(lines, True, '0'))
     return o2 * co2
 
-# print('part 1', part1())
 print('part 1', part1())
 print('part 2', part2())
